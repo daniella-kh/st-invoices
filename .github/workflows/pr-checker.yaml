@@ -1,0 +1,29 @@
+name: "pr-checker"
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+  push:
+    branches:
+      - develop
+
+permissions:
+  packages: read
+  contents: read
+
+
+jobs:
+  checking:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+      - name: Add npmrc
+        run: |
+          echo //npm.pkg.github.com/:_authToken=\${{ secrets.DEVOPS_TOKEN }} > ${{ github.workspace }}/.npmrc
+          echo '@elementor:registry=https://npm.pkg.github.com/' >> ${{ github.workspace }}/.npmrc
+          cat ${{ github.workspace }}/.npmrc
+        # Install your dependencies
+      - run: npm i
+      - run: npm run lint
+      - run: npm run test
+

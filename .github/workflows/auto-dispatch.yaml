@@ -1,0 +1,26 @@
+name: Build and Deploy (Dispatch)
+on:
+ push:
+   branches:
+     - need_to_change
+
+jobs:
+  RepoAjobs:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: send dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.DEVOPS_TOKEN  }}
+          repository: elementor/elementor-platform-iac
+          event-type: ${{ github.event.repository.name }}-${{ github.ref }}-${{ github.actor }}
+          client-payload: >-
+            {
+              "type": "docker",
+              "repository": "${{ github.event.repository.name }}" ,
+              "repository_full": "${{ github.event.repository.full_name }}" ,
+              "github-sha": "${{ github.sha }}",
+              "github-actor": "${{ github.actor }}",
+              "github-ref": "${{ github.ref }}",
+              "DOCKER_BUILD_NPM_TOKEN": "${{ secrets.DEVOPS_TOKEN }}"
+            }

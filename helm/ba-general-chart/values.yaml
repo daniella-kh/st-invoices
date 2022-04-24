@@ -1,0 +1,152 @@
+product: platform
+
+image:
+  registry: 061538166779.dkr.ecr.eu-central-1.amazonaws.com/
+  repository:
+  version: >-
+    master@sha256:28238293d95ba52bd0a3ef4d3bead063b20e390d95a39e57d28db0ef47d6e260
+
+
+
+serviceMonitor:
+  enabled: false
+  port: http
+  additionalLabels:
+    release: prometheus
+  interval: 10s
+
+podAnnotations: {}
+
+
+config:
+  NODE_ENV: development
+  PORT: 5002
+  LOG_LEVEL: info
+  BASE_ROUTE: #/v1/
+#  MYSQL_HOST: db.dev.elementor.red
+#  MYSQL_PORT: 3306
+#  MYSQL_USER:
+#  MYSQL_PASSWORD: <--- delete
+#  MYSQL_DATABASE: website_db
+#  MYSQL_POOL_MIN: 3
+#  MYSQL_POOL_MAX: 8
+#  REDIS_HOST:
+#  REDIS_PORT: 6379
+#  REDIS_PASSWORD: <---- delete
+#  REDIS_DATABASE_INDEX: 8
+#  REDIS_EXPIRED_MINUTES:
+  SENTRY_DSN: http
+  SENTRY_ENVIRONMENT: dev
+
+externalsecret: {}
+#  target:
+#    name: ba-boilerplate-external-secret
+#  enable: true
+#  refreshInterval: 15s
+#  secretStoreRef:
+#    name: vault-backend
+#    kind: ClusterSecretStore
+#  data:
+#    - secretKey: MONGO_PASSWORD
+#      remoteRef:
+#        key: data-dev-ba-braze-connector/config
+#        property: MONGO_PASSWORD
+
+#
+secret: []
+##  KEY: VALUE
+
+
+serviceAccount:
+  # Base64 decoded JSON
+  # If set - the helper will add relevant volumes, volumeMounts and env GOOGLE_APPLICATION_CREDENTIALS
+  GOOGLE_SERVICE_ACCOUNT_KEY:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+
+healthcheck:
+  livenessProbe:
+    httpGet:
+      path: /liveness
+      port: 5002
+    periodSeconds: 5
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 3
+
+  readinessProbe:
+    httpGet:
+      path: /readiness
+      port: 5002
+    periodSeconds: 1
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 1
+
+  startupProbe:
+    tcpSocket:
+      port: 5002
+    failureThreshold: 20
+    periodSeconds: 3
+
+
+service:
+  type: ClusterIP
+  ports:
+    - port: 5002
+      targetPort: 5002
+      name: http
+
+ingressroute:
+  enabled: false
+  annotations: {}
+  hosts:
+    - match: Host(`stg.elementor.red`) && PathPrefix(`/wp-content/plugins`)
+
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+#  targetMemoryUtilizationPercentage: 0
+#  targetCPUUtilizationPercentage: 80
+
+
+#tolerations:
+#  - key: low-consumption
+#    operator: Equal
+#    value: 'true'
+#    effect: NoSchedule
+
+
+volumes: []
+
+volumeMounts: []
+
+env: dev
+
+nodeAffinity:
+  key: cloud.google.com/gke-nodepool
+  value: pool-pre-emptible-2
+
+podAntiAffinity:
+  weight: 100
+  key: app
+  topologyKey: kubernetes.io/hostname
+
+command: []
