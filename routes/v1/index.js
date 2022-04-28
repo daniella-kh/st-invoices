@@ -1,9 +1,7 @@
 const express = require( 'express' );
 const router = express.Router();
-const userRouter = require( './users/users.route.js' );
-const swaggerExampleRouter = require( './swagger-example/swagger-example.route' );
+const invoiceRouter = require( './invoice/invoice.route.js' );
 
-router.use( '/user', userRouter );
-router.use( '/swagger-example', swaggerExampleRouter );
+router.use( '/invoice', invoiceRouter );
 
 module.exports = router;

@@ -2,7 +2,7 @@ const express = require( 'express' );
 const router = express.Router();
 const { app } = require( '../config' );
 
-const statusRouter = require( './common/status.route' );
+const statusRouter = require( './common/status.route' ); //todo: what is this?
 
 const v1_Router = require( './v1' );
 

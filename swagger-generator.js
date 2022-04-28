@@ -4,8 +4,8 @@ const { app, swagger } = require( './config' );
 const options = {
 	swaggerDefinition: {
 		info: {
-			description: 'This is a sample swagger setup',
-			title: 'Swagger BA Boilerplate',
+			description: 'Service for saving and retrieving invoices.',
+			title: 'Invoice Service',
 			version: '1.0.0',
 		},
 		basePath: app.baseRoute,
