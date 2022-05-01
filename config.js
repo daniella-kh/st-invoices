@@ -18,7 +18,7 @@ const config = {
 		swaggerURL: process.env.SWAGGER_URL || '/swagger/api-docs',
 	},
 	storage: {
-		expiration: 15 * 60 * 1000, // 15 minutes
+		expiration: 3 * 60 * 1000, // 3 minutes
 		bucket_name: `st-invoices-${process.env.SHORT_ENV || 'dev'}`
 	}
 };

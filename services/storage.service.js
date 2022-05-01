@@ -1,4 +1,4 @@
-const { storage } = require( '../services/google-services' );
+const { storage } = require( '../services/google.services' );
 const config = require( '../config' );
 const axios = require( "axios" );
 
@@ -15,38 +15,19 @@ const storageService = () => {
 		const writeStream = file.createWriteStream();
 		const stream = await axios( from, { method: 'GET', responseType: 'stream' } );
 		await stream.data.pipe( writeStream );
+		return await bucket.file( to ).getSignedUrl( getOptions() );
 	}
 
 	const download = async ( filename ) => {
 		let url = null;
-		const options = {
-			version: 'v4',
-			action: 'read',
-			expires: Date.now() + config.storage.expiration,
-		};
 
 		const file = await storage.bucket( bucketName ).file( filename );
 		const [ exists ] = await file.exists();
 		if ( exists ) {
-			[ url ] = await storage.bucket( bucketName ).file( filename ).getSignedUrl( options );
+			[ url ] = await storage.bucket( bucketName ).file( filename ).getSignedUrl( getOptions() );
 		}
 
 		return url;
-	}
-
-	const downloadFirst = async ( prefix ) => {
-		const options = {
-			prefix,
-		};
-
-		// Lists files in the bucket, filtered by a prefix
-		const [ files ] = await storage.bucket( bucketName ).getFiles( options );
-
-		if ( !files.length ) {
-			return {};
-		}
-
-		return download( files[ 0 ].name );
 	}
 
 	const isLive = async () => {
@@ -60,12 +41,9 @@ const storageService = () => {
 	}
 
 	const deleteAll = async ( prefix ) => {
-		const options = {
-			prefix,
-		};
 
 		// Lists files in the bucket, filtered by a prefix
-		const [ files ] = await storage.bucket( bucketName ).getFiles( options );
+		const [ files ] = await storage.bucket( bucketName ).getFiles( { prefix } );
 
 		if ( !files.length ) {
 			return {};
@@ -78,11 +56,18 @@ const storageService = () => {
 		return download( files[ 0 ].name );
 	}
 
+	const getOptions = () => {
+		return {
+			version: 'v4',
+			action: 'read',
+			expires: Date.now() + config.storage.expiration,
+		};
+	}
+
 	return {
 		upload,
 		uploadFromUrl,
 		download,
-		downloadFirst,
 		isLive,
 		deleteAll
 	}
