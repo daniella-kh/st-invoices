@@ -40,7 +40,7 @@ const storageService = () => {
 		return result;
 	}
 
-	const deleteAll = async ( prefix ) => {
+	/*	const deleteAll = async ( prefix ) => {
 
 		// Lists files in the bucket, filtered by a prefix
 		const [ files ] = await storage.bucket( bucketName ).getFiles( { prefix } );
@@ -54,7 +54,7 @@ const storageService = () => {
 		} );
 
 		return download( files[ 0 ].name );
-	}
+	}*/
 
 	const getOptions = () => {
 		return {
@@ -68,8 +68,7 @@ const storageService = () => {
 		upload,
 		uploadFromUrl,
 		download,
-		isLive,
-		deleteAll
+		isLive
 	}
 }
 module.exports = storageService();

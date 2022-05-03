@@ -1,1 +1,1 @@
-module.exports.invoiceController = require( "./invoice.controller" );
+module.exports.invoicesController = require( "./invoices.controller" );

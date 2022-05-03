@@ -1,7 +1,7 @@
 const express = require( 'express' );
 const router = express.Router();
-const invoiceRouter = require( './invoice/invoice.route.js' );
+const invoicesRouter = require( './invoices/invoices.route.js' );
 
-router.use( '/invoice', invoiceRouter );
+router.use( '/invoices', invoicesRouter );
 
 module.exports = router;

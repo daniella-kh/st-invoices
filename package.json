@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server",
-    "test": "jest --coverage --detectOpenHandles --forceExit",
-    "test:ci": "jest --ci --reporters=default --coverage",
-    "lint": "eslint ."
+	  "start": "node server",
+	  "dev": "nodemon server",
+	  "test": "jest --coverage --detectOpenHandles --forceExit",
+	  "test:ci": "jest --ci --reporters=default --coverage",
+	  "lint": "eslint .",
+	  "coverage": "start coverage/lcov-report/index.html"
   },
   "dependencies": {
     "@google-cloud/storage": "^5.19.3",

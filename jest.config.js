@@ -7,7 +7,7 @@ module.exports = {
 
 	// The test environment that will be used for testing
 	"testEnvironment": "node",
-	"setupFilesAfterEnv": [ './tests/jest.setup.js' ],
+	"setupFilesAfterEnv": [],
 	"coverageReporters": [
 		"lcov",
 		"text-summary"
