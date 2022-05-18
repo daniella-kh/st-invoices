@@ -15,8 +15,6 @@ const postValidation = [
 const getValidation = [
 	param( 'order_id', 'Missing required field' ).exists(),
 	param( 'order_id', 'Invalid order id must be number' ).optional().isInt(),
-	param( 'user_id', 'Missing required field' ).exists(),
-	param( 'user_id', 'Invalid user id must be number' ).optional().isInt(),
 
 	validate,
 ];

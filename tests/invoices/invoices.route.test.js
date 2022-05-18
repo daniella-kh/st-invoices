@@ -47,7 +47,6 @@ describe( 'invoices routes', () => {
 		it( 'valid', async ( done ) => {
 			const url = "https://url.com";
 			invoicesService.post.mockImplementationOnce( async ( user_id, order_id, _url ) => {
-				console.log( user_id, order_id, _url );
 				expect( user_id ).toEqual( "1" );
 				expect( order_id ).toEqual( "2" );
 				expect( _url ).toEqual( url );
@@ -61,7 +60,7 @@ describe( 'invoices routes', () => {
 				//.expect( 200, { url }, done )
 				.expect( 200 )
 				.then( res => {
-					expect( res.body ).toEqual( url );
+					expect( res.body ).toEqual( { url } );
 					done();
 				} )
 				.catch( err => done( err ) )

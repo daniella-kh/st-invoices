@@ -4,7 +4,7 @@ const pjson = require( './package.json' );
 const config = {
 	app: {
 		port: process.env.PORT || 5000,
-		version: `${ pjson.name }@${ pjson.version }`,
+		version: `${pjson.name}@${pjson.version}`,
 		baseRoute: process.env.BASE_ROUTE || '/v1',
 		silent: process.env.NODE_ENV === 'test',
 		logLevel: process.env.LOG_LEVEL || ( process.env.NODE_ENV === 'production' ? 'error' : 'info' ),
